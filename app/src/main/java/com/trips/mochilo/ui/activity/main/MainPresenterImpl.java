@@ -1,9 +1,9 @@
 package com.trips.mochilo.ui.activity.main;
 
-public class MainPresenterI implements MainPresenter {
+public class MainPresenterImpl implements MainPresenter {
     private final MainView mView;
 
-    public MainPresenterI(MainView view) {
+    public MainPresenterImpl(MainView view) {
         mView = view;
     }
 }
