@@ -1,0 +1,88 @@
+apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
+
+def buildTime() {
+    return new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
+}
+
+def versionMajor = 0
+def versionMinor = 6
+def versionPatch = 0
+def versionBuild = 0 // bump for dogfood builds, public betas, etc.
+
+android {
+    compileSdkVersion Integer.parseInt(project.COMPILE_SDK_VERSION)
+    buildToolsVersion project.BUILD_TOOLS_VERSION
+
+    defaultConfig {
+        applicationId project.APPLICATION_ID
+        minSdkVersion Integer.parseInt(project.MIN_SDK_VERSION)
+        targetSdkVersion Integer.parseInt(project.TARGET_SDK_VERSION)
+        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+        buildConfigField "String", "BUILD_TIME", "\"${buildTime()}\""
+        resConfigs "nodpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
+        resConfigs "en"
+    }
+
+    signingConfigs { release }
+
+    buildTypes {
+
+        debug {
+            minifyEnabled false
+            versionNameSuffix "-debug"
+        }
+
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+
+    lintOptions {
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+}
+
+ext.supportLibraryVersion = '23.0.1'
+ext.okHttpLibraryVersion = '2.3.0'
+ext.daggerLibraryVersion = '2.0'
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile "com.android.support:appcompat-v7:$supportLibraryVersion"
+    compile "com.android.support:design:$supportLibraryVersion"
+    compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
+    compile "com.squareup.okhttp:okhttp-urlconnection:$okHttpLibraryVersion"
+    compile "com.squareup.okhttp:okhttp:$okHttpLibraryVersion"
+    compile "com.google.dagger:dagger:$daggerLibraryVersion"
+    apt "com.google.dagger:dagger-compiler:$daggerLibraryVersion"
+    provided 'org.glassfish:javax.annotation:10.0-b28'
+    compile 'com.squareup:otto:1.3.5'
+    compile 'com.jakewharton.timber:timber:2.7.1'
+    compile 'com.jakewharton:butterknife:6.1.0'
+    compile 'io.reactivex:rxandroid:1.0.1'
+}
+
+File propFile = file('signing.properties');
+if (propFile.exists()) {
+    def Properties props = new Properties()
+    props.load(new FileInputStream(propFile))
+
+    if (props.containsKey('STORE_FILE') && props.containsKey('STORE_PASSWORD') &&
+            props.containsKey('KEY_ALIAS') && props.containsKey('KEY_PASSWORD')) {
+        android.signingConfigs.release.storeFile = file(props['STORE_FILE'])
+        android.signingConfigs.release.storePassword = props['STORE_PASSWORD']
+        android.signingConfigs.release.keyAlias = props['KEY_ALIAS']
+        android.signingConfigs.release.keyPassword = props['KEY_PASSWORD']
+    } else {
+        android.buildTypes.release.signingConfig = null
+    }
+} else {
+    android.buildTypes.release.signingConfig = null
+}
