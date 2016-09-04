@@ -1,12 +1,11 @@
 apply plugin: 'com.android.application'
-apply plugin: 'android-apt'
 
 def buildTime() {
     return new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
 }
 
-def versionMajor = 0
-def versionMinor = 6
+def versionMajor = 1
+def versionMinor = 0
 def versionPatch = 0
 def versionBuild = 0 // bump for dogfood builds, public betas, etc.
 
@@ -21,7 +20,6 @@ android {
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         buildConfigField "String", "BUILD_TIME", "\"${buildTime()}\""
-        resConfigs "nodpi", "hdpi", "xhdpi", "xxhdpi", "xxxhdpi"
         resConfigs "en"
     }
 
@@ -42,6 +40,15 @@ android {
         }
     }
 
+    productFlavors {
+        prod {
+
+        }
+        mock {
+            applicationId project.APPLICATION_ID + ".mock"
+        }
+    }
+
     lintOptions {
         // Or, if you prefer, you can continue to check for errors in release builds,
         // but continue the build even when errors are found:
@@ -49,25 +56,68 @@ android {
     }
 }
 
-ext.supportLibraryVersion = '23.0.1'
-ext.okHttpLibraryVersion = '2.3.0'
-ext.daggerLibraryVersion = '2.0'
-
+ext.supportLibraryVersion = '24.2.0'
+ext.daggerLibraryVersion = '2.6.1'
+ext.retrofitVersion = '2.1.0'
+ext.butterKnifeVersion = '8.4.0'
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile "com.android.support:appcompat-v7:$supportLibraryVersion"
     compile "com.android.support:design:$supportLibraryVersion"
     compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
-    compile "com.squareup.okhttp:okhttp-urlconnection:$okHttpLibraryVersion"
-    compile "com.squareup.okhttp:okhttp:$okHttpLibraryVersion"
+    //Retrofit
+    compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    //OkHttp
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    //RxJava
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:1.1.6'
+    //ButterKnife
+    compile "com.jakewharton:butterknife:$butterKnifeVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
+    //Dagger
     compile "com.google.dagger:dagger:$daggerLibraryVersion"
-    apt "com.google.dagger:dagger-compiler:$daggerLibraryVersion"
-    provided 'org.glassfish:javax.annotation:10.0-b28'
-    compile 'com.squareup:otto:1.3.5'
-    compile 'com.jakewharton.timber:timber:2.7.1'
-    compile 'com.jakewharton:butterknife:6.1.0'
-    compile 'io.reactivex:rxandroid:1.0.1'
-    compile 'net.danlew:android.joda:2.8.2'
+    annotationProcessor "com.google.dagger:dagger-compiler:$daggerLibraryVersion"
+    provided 'javax.annotation:jsr250-api:1.0'
+    //Others
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.squareup:otto:1.3.8'
+    compile 'com.jakewharton.timber:timber:4.3.0'
+
+
+    //Dependencies for JUNit and unit tests.
+    testCompile "junit:junit:4.12"
+    testCompile "org.mockito:mockito-all:1.10.19"
+    testCompile "org.hamcrest:hamcrest-all:1.3"
+    testCompile("org.powermock:powermock-module-junit4:1.6.2")
+    testCompile("org.powermock:powermock-api-mockito:1.6.2")
+    testCompile 'com.squareup.okhttp3:mockwebserver:3.4.1'
+
+    //Dependencies for Espresso
+    androidTestCompile "com.android.support:appcompat-v7:$supportLibraryVersion"
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    androidTestCompile("com.android.support.test:runner:0.5") {
+        exclude module: 'support-annotations'
+        exclude module: 'support-v4'
+    }
+    androidTestCompile("com.android.support.test:rules:0.5") {
+        exclude module: 'support-annotations'
+        exclude module: 'support-v4'
+    }
+    androidTestCompile("com.android.support.test.espresso:espresso-intents:2.2.2") {
+        exclude module: 'recyclerview-v7'
+        exclude module: 'support-annotations'
+        exclude module: 'support-v4'
+    }
+    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.1') {
+        exclude module: 'recyclerview-v7'
+        exclude module: 'support-annotations'
+        exclude module: 'support-v4'
+
+    }
 }
 
 File propFile = file('signing.properties');
