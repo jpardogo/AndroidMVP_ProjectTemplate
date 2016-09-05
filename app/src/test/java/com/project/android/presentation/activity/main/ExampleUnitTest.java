@@ -1,4 +1,4 @@
-package com.project.android.ui.activity.main;
+package com.project.android.presentation.activity.main;
 
 import org.junit.Test;
 

@@ -11,6 +11,5 @@
     <dimen name="spacing_touchable">48dp</dimen>
     <dimen name="spacing_content_start">72dp</dimen>
 
-    <dimen name="action_bar_height">56dp</dimen>
     <dimen name="status_bar_height">24dp</dimen>
 </resources>
