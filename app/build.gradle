@@ -1,0 +1,139 @@
+apply plugin: 'com.android.application'
+
+def buildTime() {
+    return new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
+}
+
+def versionMajor = 1
+def versionMinor = 0
+def versionPatch = 0
+def versionBuild = 0 // bump for dogfood builds, public betas, etc.
+
+android {
+    compileSdkVersion Integer.parseInt(project.COMPILE_SDK_VERSION)
+    buildToolsVersion project.BUILD_TOOLS_VERSION
+
+    defaultConfig {
+        applicationId project.APPLICATION_ID
+        minSdkVersion Integer.parseInt(project.MIN_SDK_VERSION)
+        targetSdkVersion Integer.parseInt(project.TARGET_SDK_VERSION)
+        versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+        buildConfigField "String", "BUILD_TIME", "\"${buildTime()}\""
+        resConfigs "en"
+    }
+
+    signingConfigs { release }
+
+    buildTypes {
+
+        debug {
+            minifyEnabled false
+            versionNameSuffix "-debug"
+        }
+
+        release {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+
+    productFlavors {
+        prod {
+
+        }
+        mock {
+            applicationId project.APPLICATION_ID + ".mock"
+        }
+    }
+
+    lintOptions {
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+}
+
+ext.supportLibraryVersion = '24.2.0'
+ext.daggerLibraryVersion = '2.6.1'
+ext.retrofitVersion = '2.1.0'
+ext.butterKnifeVersion = '8.4.0'
+dependencies {
+    compile "com.android.support:appcompat-v7:$supportLibraryVersion"
+    compile "com.android.support:design:$supportLibraryVersion"
+    compile "com.android.support:recyclerview-v7:$supportLibraryVersion"
+    //Retrofit
+    compile "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    compile "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    //OkHttp
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    //RxJava
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.1.0'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:1.1.6'
+    //ButterKnife
+    compile "com.jakewharton:butterknife:$butterKnifeVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterKnifeVersion"
+    //Dagger
+    compile "com.google.dagger:dagger:$daggerLibraryVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$daggerLibraryVersion"
+    provided 'javax.annotation:jsr250-api:1.0'
+    //Others
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.squareup:otto:1.3.8'
+    compile 'com.jakewharton.timber:timber:4.3.0'
+
+
+    //Dependencies for JUNit and unit tests.
+    testCompile "junit:junit:4.12"
+    testCompile "org.mockito:mockito-all:1.10.19"
+    testCompile "org.hamcrest:hamcrest-all:1.3"
+    testCompile("org.powermock:powermock-module-junit4:1.6.2")
+    testCompile("org.powermock:powermock-api-mockito:1.6.2")
+    testCompile 'com.squareup.okhttp3:mockwebserver:3.4.1'
+
+    //Dependencies for Espresso
+    androidTestCompile "com.android.support:appcompat-v7:$supportLibraryVersion"
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    androidTestCompile("com.android.support.test:runner:0.5") {
+        exclude module: 'support-annotations'
+        exclude module: 'support-v4'
+    }
+    androidTestCompile("com.android.support.test:rules:0.5") {
+        exclude module: 'support-annotations'
+        exclude module: 'support-v4'
+    }
+    androidTestCompile("com.android.support.test.espresso:espresso-intents:2.2.2") {
+        exclude module: 'recyclerview-v7'
+        exclude module: 'support-annotations'
+        exclude module: 'support-v4'
+    }
+    androidTestCompile('com.android.support.test.espresso:espresso-contrib:2.2.1') {
+        exclude module: 'recyclerview-v7'
+        exclude module: 'support-annotations'
+        exclude module: 'support-v4'
+
+    }
+}
+
+File propFile = file('signing.properties');
+if (propFile.exists()) {
+    def Properties props = new Properties()
+    props.load(new FileInputStream(propFile))
+
+    if (props.containsKey('STORE_FILE') && props.containsKey('STORE_PASSWORD') &&
+            props.containsKey('KEY_ALIAS') && props.containsKey('KEY_PASSWORD')) {
+        android.signingConfigs.release.storeFile = file(props['STORE_FILE'])
+        android.signingConfigs.release.storePassword = props['STORE_PASSWORD']
+        android.signingConfigs.release.keyAlias = props['KEY_ALIAS']
+        android.signingConfigs.release.keyPassword = props['KEY_PASSWORD']
+    } else {
+        android.buildTypes.release.signingConfig = null
+    }
+} else {
+    android.buildTypes.release.signingConfig = null
+}
