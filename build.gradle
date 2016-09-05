@@ -7,6 +7,9 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.0-rc1'
+        //Guava classpath added to solve issue when using jack compiler for java 8:
+        //https://code.google.com/p/android/issues/detail?id=211357
+        classpath 'com.google.guava:guava:19.0'
     }
 }
 

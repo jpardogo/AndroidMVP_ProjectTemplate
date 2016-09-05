@@ -17,10 +17,18 @@ android {
         applicationId project.APPLICATION_ID
         minSdkVersion Integer.parseInt(project.MIN_SDK_VERSION)
         targetSdkVersion Integer.parseInt(project.TARGET_SDK_VERSION)
+
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+
+        jackOptions.enabled true
         buildConfigField "String", "BUILD_TIME", "\"${buildTime()}\""
         resConfigs "en"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     signingConfigs { release }

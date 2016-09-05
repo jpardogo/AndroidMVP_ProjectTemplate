@@ -8,4 +8,9 @@ public class ExampleFragmentPresenterImpl extends BasePresenter<ExampleFragmentC
     //Here we would use constructor injection via dagger if needed
     public ExampleFragmentPresenterImpl() {
     }
+
+    @Override
+    protected void clearSubscriptions() {
+
+    }
 }
