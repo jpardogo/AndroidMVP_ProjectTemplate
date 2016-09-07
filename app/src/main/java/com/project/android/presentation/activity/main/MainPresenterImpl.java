@@ -19,11 +19,4 @@ public class MainPresenterImpl extends BasePresenter<MainActivityContract.MainVi
         //the data that the view ask for.
         mExampleInteractor.requestDataToInteractor();
     }
-
-    @Override
-    protected void clearSubscriptions() {
-        //Tell all our interactor to unsubcribe all RxJava
-        // subscriptions because out view is being dettached
-        mExampleInteractor.clearSubcriptions();
-    }
 }

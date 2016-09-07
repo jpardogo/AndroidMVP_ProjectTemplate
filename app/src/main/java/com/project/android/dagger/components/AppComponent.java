@@ -23,5 +23,5 @@ public interface AppComponent {
 
     void inject(AppCompatActivity activity);
 
-    ExampleInteractor providesExampleInteractor();
+    ExampleInteractor providesExampleInteractorImpl();
 }
