@@ -2,11 +2,21 @@
 <resources>
     <!-- Base application theme. -->
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!-- Base application theme. -->
+    <style name="AppBaseTheme.NoActionBar" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="AppTheme" parent="AppBaseTheme"/>
+
+    <style name="AppTheme.NoActionbar" parent="AppBaseTheme.NoActionBar"/>
+
+    <style name="AppTheme.NoActionbar.TranslucentStatus." parent="AppBaseTheme.NoActionBar"/>
 </resources>

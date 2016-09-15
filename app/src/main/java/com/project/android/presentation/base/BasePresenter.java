@@ -6,7 +6,6 @@ import rx.subscriptions.CompositeSubscription;
 public abstract class BasePresenter<T extends MvpView> implements MvpPresenter<T> {
 
     private T mView;
-
     private CompositeSubscription mCompositeSubscription = new CompositeSubscription();
 
     @Override

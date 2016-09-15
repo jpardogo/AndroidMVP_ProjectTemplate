@@ -18,3 +18,35 @@ allprojects {
         jcenter()
     }
 }
+
+ext {
+    applicationId = "com.project.android"
+    // Sdk and tools
+    minSdkVersion = 16
+    targetSdkVersion = 24
+    compileSdkVersion = 24
+    buildToolsVersion = '24.0.2'
+    //App dependencies
+    supportLibraryVersion = '24.2.1'
+    daggerLibraryVersion = '2.6.1'
+    retrofitVersion = '2.1.0'
+    butterKnifeVersion = '8.4.0'
+    okhttp3Version = '3.4.1'
+    adapter_rxjavaVersion = '2.1.0'
+    rxandroidVersion = '1.2.1'
+    rxjavaVersion = '1.1.6'
+    jsr250_apiVersion = '1.0'
+    picassoVersion = '2.5.2'
+    ottoVersion = '1.3.8'
+    timberVersion = '4.3.0'
+    arrowVersion = '1.0.0'
+    materialtabstripVersion = '1.1.1'
+    junitVersion = '4.12'
+    mocitoVersion = '1.10.19'
+    hamcrestVersion = '1.3'
+    espressoVersion = '2.2.2'
+    powermockVersion = '1.6.2'
+    mockwebserverVersion = '3.4.1'
+    runnerVersion = '0.5'
+    rulesVersion = '0.5'
+}
