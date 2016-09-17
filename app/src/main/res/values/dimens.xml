@@ -11,5 +11,16 @@
     <dimen name="spacing_touchable">48dp</dimen>
     <dimen name="spacing_content_start">72dp</dimen>
 
+    <!--Text dimens-->
+    <dimen name="text_micro">12sp</dimen>
+    <dimen name="text_small">14sp</dimen>
+    <dimen name="text_medium">18sp</dimen>
+    <dimen name="text_large">22sp</dimen>
+    <dimen name="text_headline">24sp</dimen>
+    <dimen name="text_display1">34sp</dimen>
+    <dimen name="text_display2">45sp</dimen>
+    <dimen name="text_display3">56sp</dimen>
+    <dimen name="text_display4">112sp</dimen>
+
     <dimen name="status_bar_height">24dp</dimen>
 </resources>

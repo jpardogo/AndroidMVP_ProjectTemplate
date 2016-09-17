@@ -18,5 +18,5 @@
 
     <style name="AppTheme.NoActionbar" parent="AppBaseTheme.NoActionBar"/>
 
-    <style name="AppTheme.NoActionbar.TranslucentStatus." parent="AppBaseTheme.NoActionBar"/>
+    <style name="AppTheme.NoActionbar.TranslucentStatus" parent="AppBaseTheme.NoActionBar"/>
 </resources>
