@@ -17,6 +17,11 @@ public class MainPresenterImpl extends BasePresenter<MainActivityContract.MainVi
         //Interactors are presentation layer agnostic,
         //so any presenter can use the interactor it need to request
         //the data that the view ask for.
-        mExampleInteractor.requestDataToInteractor();
+        addSubscription(mExampleInteractor.requestDataToInteractor()
+                .subscribe(exampleModel -> {
+
+                }, throwable -> {
+
+                }));
     }
 }

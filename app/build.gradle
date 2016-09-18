@@ -116,11 +116,8 @@ dependencies {
 
     //Dependencies for JUNit and unit tests.
     testCompile "junit:junit:$rootProject.ext.junitVersion"
-    testCompile "org.mockito:mockito-all:$rootProject.ext.mocitoVersion"
+    testCompile "org.mockito:mockito-all:$rootProject.ext.mockitoVersion"
     testCompile "org.hamcrest:hamcrest-all:$rootProject.ext.hamcrestVersion"
-    testCompile "org.powermock:powermock-module-junit4:$rootProject.ext.powermockVersion"
-    testCompile "org.powermock:powermock-api-mockito:$rootProject.ext.powermockVersion"
-    testCompile "com.squareup.okhttp3:mockwebserver:$rootProject.ext.mockwebserverVersion"
 
     //Dependencies for Espresso
     androidTestCompile "com.android.support.test:runner:$rootProject.ext.runnerVersion"

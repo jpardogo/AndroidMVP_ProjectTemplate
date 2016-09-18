@@ -24,4 +24,10 @@ public class ExampleFragment extends BaseFragment implements ExampleFragmentCont
         getComponent(MainComponent.class).inject(this);
         mPresenter.attachView(this);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mPresenter.detachView();
+    }
 }

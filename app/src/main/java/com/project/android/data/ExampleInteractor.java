@@ -1,16 +1,27 @@
 package com.project.android.data;
 
-public class ExampleInteractor {
-    public void requestDataToInteractor() {
+import com.project.android.data.remote.model.ExampleModel;
 
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
+public class ExampleInteractor {
+
+//    Inject retorfit service via dagger
+//    private final ExampleRestService mExampleRestService;
+
+
+    public Observable<ExampleModel> requestDataToInteractor() {
         //Using RxJava + Retrofit we can call the a RetrofitRestService to get data from an API
         //We return the subcription to the presenter
         //Using RxJava + Realm we can get data from DataBase
 
-        //There are difference techniques where we can choose, cache, network, database
-        //read: http://blog.danlew.net/2015/06/22/loading-data-from-multiple-sources-with-rxjava/
-        //all of them can be well manage via RxJava, Retrofit and Realm
-
-        //Follow this technique provide for easy mocking and testing in unit test
+//        return Observable.defer(() -> mExampleRestService.getWhatever()
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribeOn(Schedulers.io()));
+        return Observable.just(new ExampleModel())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io());
     }
 }

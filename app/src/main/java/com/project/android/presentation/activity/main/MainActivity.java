@@ -29,7 +29,7 @@ public class MainActivity extends BaseActivity implements MainActivityContract.M
         ButterKnife.bind(this);
         //Ready to use presenter
         mPresenter.requestSomeData();
-        //Java 8 lambas thanks to jack compiler
+        //Java 8 lambdas thanks to jack compiler
         mButton.setOnClickListener(v -> {
             Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show();
         });
