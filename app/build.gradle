@@ -17,8 +17,6 @@ android {
         applicationId rootProject.ext.applicationId
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
 
         versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
@@ -27,9 +25,11 @@ android {
             enabled true
         }
 
+        vectorDrawables.useSupportLibrary = true
+
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
         buildConfigField "String", "BUILD_TIME", "\"${buildTime()}\""
         resConfigs "en"
-        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
     }
 
     compileOptions {
@@ -42,8 +42,8 @@ android {
     buildTypes {
 
         debug {
-            minifyEnabled false
             versionNameSuffix "-debug"
+            minifyEnabled false
             testCoverageEnabled false
         }
 
@@ -63,6 +63,12 @@ android {
         }
 
         prod {
+        }
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.outputFile = new File(output.outputFile.parent, output.outputFile.name.replace(".apk", "-" + defaultConfig.versionName + ".apk"))
         }
     }
 
@@ -108,6 +114,10 @@ dependencies {
     compile "com.google.dagger:dagger:$rootProject.ext.daggerLibraryVersion"
     annotationProcessor "com.google.dagger:dagger-compiler:$rootProject.ext.daggerLibraryVersion"
     provided "javax.annotation:jsr250-api:$rootProject.ext.jsr250_apiVersion"
+    //AutoValue
+    provided "com.google.auto.value:auto-value:$autoValueVersion"
+    annotationProcessor "com.google.auto.value:auto-value:$autoValueVersion"
+    annotationProcessor "com.ryanharter.auto.value:auto-value-parcel:$autoValueExtParcelVersion"
     //Others
     compile "com.squareup.picasso:picasso:$rootProject.ext.picassoVersion"
     compile "com.squareup:otto:$rootProject.ext.ottoVersion"

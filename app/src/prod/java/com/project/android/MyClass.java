@@ -1,4 +1,4 @@
 package com.project.android;
 
-public class ExampleMock {
+public class MyClass {
 }
